@@ -242,4 +242,49 @@ class BasicFormBuilderTest extends PHPUnit_Framework_TestCase
         $result = $this->form->select('Favorite Color', 'color', $options)->render();
         $this->assertEquals($expected, $result);
     }
+
+    /** @test */
+    function render_checkbox()
+    {
+        $expected = '<p class="control"><label class="checkbox"><input type="checkbox" name="terms" value="1">Agree to Terms</label></p>';
+        $result = $this->form->checkbox('Agree to Terms', 'terms')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_checkbox_with_error()
+    {
+        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
+        $errorStore->shouldReceive('hasError')->andReturn(true);
+        $errorStore->shouldReceive('getError')->andReturn('Must agree to terms.');
+
+        $this->builder->setErrorStore($errorStore);
+
+        $expected = '<p class="is-danger control"><label class="checkbox"><input type="checkbox" name="terms" value="1">Agree to Terms</label><span class="help">Must agree to terms.</span></p>';
+        $result = $this->form->checkbox('Agree to Terms', 'terms')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_checkbox_with_old_input()
+    {
+        $oldInput = Mockery::mock('AdamWathan\Form\OldInput\OldInputInterface');
+        $oldInput->shouldReceive('hasOldInput')->andReturn(true);
+        $oldInput->shouldReceive('getOldInput')->andReturn('1');
+
+        $this->builder->setOldInputProvider($oldInput);
+
+        $expected = '<p class="control"><label class="checkbox"><input type="checkbox" name="terms" value="1" checked="checked">Agree to Terms</label></p>';
+        $result = $this->form->checkbox('Agree to Terms', 'terms')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_checkbox_checked()
+    {
+        $expected = '<p class="control"><label class="checkbox"><input type="checkbox" name="terms" value="1" checked="checked">Agree to Terms</label></p>';
+        $result = $this->form->checkbox('Agree to Terms', 'terms')->check()->render();
+        $this->assertEquals($expected, $result);
+    }
+
 }

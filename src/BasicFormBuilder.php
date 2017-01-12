@@ -3,6 +3,7 @@
 namespace Isaac\BulmaForm;
 
 use AdamWathan\Form\FormBuilder;
+use Isaac\BulmaForm\Elements\CheckGroup;
 use Isaac\BulmaForm\Elements\Control;
 use Isaac\BulmaForm\Elements\GroupWrapper;
 use Isaac\BulmaForm\Elements\Select;
@@ -77,5 +78,36 @@ class BasicFormBuilder
     {
         $control = $this->builder->select($name, $options);
         return $this->selectFormGroup($label, $name, $control);
+    }
+
+    public function checkbox($label, $name)
+    {
+        $control = $this->builder->checkbox($name);
+        return $this->checkGroup($label, $name, $control);
+    }
+
+    public function inlineCheckbox($label, $name)
+    {
+        return $this->checkbox($label, $name)->inline();
+    }
+
+    protected function checkGroup($label, $name, $control)
+    {
+        $checkGroup = $this->buildCheckGroup($label, $name, $control);
+        return $this->wrap($checkGroup->addClass('control'));
+    }
+
+    protected function buildCheckGroup($label, $name, $control)
+    {
+        $label = $this->builder->label($label, $name)->after($control)->addClass('checkbox');
+
+        $checkGroup = new CheckGroup($label);
+
+        if ($this->builder->hasError($name)) {
+            $checkGroup->helpBlock($this->builder->getError($name));
+            $checkGroup->addClass('is-danger');
+        }
+
+        return $checkGroup;
     }
 }
