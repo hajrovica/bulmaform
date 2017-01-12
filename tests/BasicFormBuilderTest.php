@@ -197,49 +197,49 @@ class BasicFormBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
-//    /** @test */
-//    public function render_select()
-//    {
-//        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><span class="select"><select name="color" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3">Blue</option></select></span></p>';
-//        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
-//        $result = $this->form->select('Favorite Color', 'color', $options)->render();
-//        $this->assertEquals($expected, $result);
-//    }
+    /** @test */
+    public function render_select()
+    {
+        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><span class="select"><select name="color" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3">Blue</option></select></span></p>';
+        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
+        $result = $this->form->select('Favorite Color', 'color', $options)->render();
+        $this->assertEquals($expected, $result);
+    }
 
-//    /** @test */
-//    public function render_select_with_selected()
-//    {
-//        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><select name="color" class="select" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3" selected>Blue</option></select></p>';
-//        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
-//        $result = $this->form->select('Favorite Color', 'color', $options)->select('3')->render();
-//        $this->assertEquals($expected, $result);
-//    }
-//
-//    /** @test */
-//    public function render_select_with_error()
-//    {
-//        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
-//        $errorStore->shouldReceive('hasError')->andReturn(true);
-//        $errorStore->shouldReceive('getError')->andReturn('Color is required.');
-//
-//        $this->builder->setErrorStore($errorStore);
-//
-//        $expected = '<label class="label" for="color">Favorite Color</label><p class="control is-danger"><select name="color" class="select" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3">Blue</option></select><p class="help-block">Color is required.</p></p>';
-//        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
-//        $result = $this->form->select('Favorite Color', 'color', $options)->render();
-//        $this->assertEquals($expected, $result);
-//    }
+    /** @test */
+    public function render_select_with_selected()
+    {
+        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><span class="select"><select name="color" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3" selected>Blue</option></select></span></p>';
+        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
+        $result = $this->form->select('Favorite Color', 'color', $options)->select('3')->render();
+        $this->assertEquals($expected, $result);
+    }
 
-//    /** @test */
-//    public function render_select_with_old_input()
-//    {
-//        $oldInput = Mockery::mock('AdamWathan\Form\OldInput\OldInputInterface');
-//        $oldInput->shouldReceive('hasOldInput')->andReturn(true);
-//        $oldInput->shouldReceive('getOldInput')->andReturn('2');
-//        $this->builder->setOldInputProvider($oldInput);
-//        $expected = '<div class="form-group"><label class="control-label" for="color">Favorite Color</label><select name="color" id="color" class="form-control"><option value="1">Red</option><option value="2" selected>Green</option><option value="3">Blue</option></select></div>';
-//        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
-//        $result = $this->form->select('Favorite Color', 'color', $options)->render();
-//        $this->assertEquals($expected, $result);
-//    }
+    /** @test */
+    public function render_select_with_error()
+    {
+        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
+        $errorStore->shouldReceive('hasError')->andReturn(true);
+        $errorStore->shouldReceive('getError')->andReturn('Color is required.');
+
+        $this->builder->setErrorStore($errorStore);
+
+        $expected = '<label class="label" for="color">Favorite Color</label><p class="control is-danger"><span class="select"><select name="color" id="color"><option value="1">Red</option><option value="2">Green</option><option value="3">Blue</option></select></span><span class="help">Color is required.</span></p>';
+        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
+        $result = $this->form->select('Favorite Color', 'color', $options)->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    public function render_select_with_old_input()
+    {
+        $oldInput = Mockery::mock('AdamWathan\Form\OldInput\OldInputInterface');
+        $oldInput->shouldReceive('hasOldInput')->andReturn(true);
+        $oldInput->shouldReceive('getOldInput')->andReturn('2');
+        $this->builder->setOldInputProvider($oldInput);
+        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><span class="select"><select name="color" id="color"><option value="1">Red</option><option value="2" selected>Green</option><option value="3">Blue</option></select></span></p>';
+        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
+        $result = $this->form->select('Favorite Color', 'color', $options)->render();
+        $this->assertEquals($expected, $result);
+    }
 }

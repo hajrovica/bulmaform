@@ -5,6 +5,7 @@ namespace Isaac\BulmaForm;
 use AdamWathan\Form\FormBuilder;
 use Isaac\BulmaForm\Elements\Control;
 use Isaac\BulmaForm\Elements\GroupWrapper;
+use Isaac\BulmaForm\Elements\Select;
 
 class BasicFormBuilder
 {
@@ -21,6 +22,21 @@ class BasicFormBuilder
         $control->id($name);
 
         $formGroup = new Control($label, $control);
+
+        if ($this->builder->hasError($name)) {
+            $formGroup->helpBlock($this->builder->getError($name));
+            $formGroup->addClass('is-danger');
+        }
+
+        return $this->wrap($formGroup);
+    }
+
+    protected function selectFormGroup($label, $name, $control)
+    {
+        $label = $this->builder->label($label)->addClass('label')->forId($name);
+        $control->id($name);
+
+        $formGroup = new Select($label, $control);
 
         if ($this->builder->hasError($name)) {
             $formGroup->helpBlock($this->builder->getError($name));
@@ -60,6 +76,6 @@ class BasicFormBuilder
     public function select($label, $name, $options = [])
     {
         $control = $this->builder->select($name, $options);
-        return $this->formGroup($label, $name, $control);
+        return $this->selectFormGroup($label, $name, $control);
     }
 }
