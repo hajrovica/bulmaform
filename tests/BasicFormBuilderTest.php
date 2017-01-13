@@ -287,4 +287,91 @@ class BasicFormBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /** @test */
+    function render_radio()
+    {
+        $expected = '<p class="control"><label class="radio"><input type="radio" name="color" value="red">Red</label></p>';
+        $result = $this->form->radio('Red', 'color', 'red')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_radio_with_error()
+    {
+        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
+        $errorStore->shouldReceive('hasError')->andReturn(true);
+        $errorStore->shouldReceive('getError')->andReturn('Sample error');
+
+        $this->builder->setErrorStore($errorStore);
+
+        $expected = '<p class="is-danger control"><label class="radio"><input type="radio" name="color" value="red">Red</label><span class="help">Sample error</span></p>';
+        $result = $this->form->radio('Red', 'color', 'red')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_radio_with_old_input()
+    {
+        $oldInput = Mockery::mock('AdamWathan\Form\OldInput\OldInputInterface');
+        $oldInput->shouldReceive('hasOldInput')->andReturn(true);
+        $oldInput->shouldReceive('getOldInput')->andReturn('red');
+
+        $this->builder->setOldInputProvider($oldInput);
+
+        $expected = '<p class="control"><label class="radio"><input type="radio" name="color" value="red" checked="checked">Red</label></p>';
+        $result = $this->form->radio('Red', 'color', 'red')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_textarea()
+    {
+        $expected = '<label class="label" for="bio">Bio</label><p class="control"><textarea name="bio" rows="10" cols="50" class="textarea" id="bio"></textarea></p>';
+        $result = $this->form->textarea('Bio', 'bio')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_textarea_with_rows()
+    {
+        $expected = '<label class="label" for="bio">Bio</label><p class="control"><textarea name="bio" rows="5" cols="50" class="textarea" id="bio"></textarea></p>';
+        $result = $this->form->textarea('Bio', 'bio')->rows(5)->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_textarea_with_cols()
+    {
+        $expected = '<label class="label" for="bio">Bio</label><p class="control"><textarea name="bio" rows="10" cols="20" class="textarea" id="bio"></textarea></p>';
+        $result = $this->form->textarea('Bio', 'bio')->cols(20)->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_textarea_with_old_input()
+    {
+        $oldInput = Mockery::mock('AdamWathan\Form\OldInput\OldInputInterface');
+        $oldInput->shouldReceive('hasOldInput')->andReturn(true);
+        $oldInput->shouldReceive('getOldInput')->andReturn('Sample bio');
+
+        $this->builder->setOldInputProvider($oldInput);
+
+        $expected = '<label class="label" for="bio">Bio</label><p class="control"><textarea name="bio" rows="10" cols="50" class="textarea" id="bio">Sample bio</textarea></p>';
+        $result = $this->form->textarea('Bio', 'bio')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_textarea_with_error()
+    {
+        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
+        $errorStore->shouldReceive('hasError')->andReturn(true);
+        $errorStore->shouldReceive('getError')->andReturn('Sample error');
+
+        $this->builder->setErrorStore($errorStore);
+
+        $expected = '<label class="label" for="bio">Bio</label><p class="control is-danger"><textarea name="bio" rows="10" cols="50" class="textarea" id="bio"></textarea><span class="help">Sample error</span></p>';
+        $result = $this->form->textarea('Bio', 'bio')->render();
+        $this->assertEquals($expected, $result);
+    }
 }

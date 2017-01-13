@@ -110,4 +110,44 @@ class BasicFormBuilder
 
         return $checkGroup;
     }
+
+    protected function buildRadioGroup($label, $name, $control)
+    {
+        $label = $this->builder->label($label, $name)->after($control)->addClass('radio');
+
+        $checkGroup = new CheckGroup($label);
+
+        if ($this->builder->hasError($name)) {
+            $checkGroup->helpBlock($this->builder->getError($name));
+            $checkGroup->addClass('is-danger');
+        }
+
+        return $checkGroup;
+    }
+
+    public function radio($label, $name, $value = null)
+    {
+        if (is_null($value)) {
+            $value = $label;
+        }
+        $control = $this->builder->radio($name, $value);
+        return $this->radioGroup($label, $name, $control);
+    }
+
+    public function inlineRadio($label, $name, $value = null)
+    {
+        return $this->radio($label, $name, $value)->inline();
+    }
+
+    protected function radioGroup($label, $name, $control)
+    {
+        $checkGroup = $this->buildRadioGroup($label, $name, $control);
+        return $this->wrap($checkGroup->addClass('control'));
+    }
+
+    public function textarea($label, $name)
+    {
+        $control = $this->builder->textarea($name)->addClass('textarea');
+        return $this->formGroup($label, $name, $control);
+    }
 }
