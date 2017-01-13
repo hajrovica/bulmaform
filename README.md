@@ -1,4 +1,4 @@
-# bulmaform
+# BulmaForm
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -7,23 +7,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-**Note:** Replace ```Nathan Isaac``` ```nisaac2fly``` ```https://github.com/nisaac2fly``` ```nathan@nathan-isaac.com``` ```nisaac2fly``` ```bulmaform``` ```Rapid form generation with Bulma and Laravel.``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md) and [composer.json](composer.json) files, then delete this line. You can run `$ php prefill.php` in the command line to make all replacements at once. Delete the file prefill.php as well.
-
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
-
-## Structure
-
-If any of the following are applicable to your project, then the directory structure should follow industry best practises by being named the following.
-
-```
-bin/        
-config/
-src/
-test/
-vendor/
-```
-
+BulmaForm builds on top of my more general [Form](https://github.com/adamwathan/form) package by adding another layer of abstraction to rapidly generate markup for standard Bulma forms and inspired from Adam Wathan's [BootFrom](https://github.com/adamwathan/bootforms) package.
 
 ## Install
 
