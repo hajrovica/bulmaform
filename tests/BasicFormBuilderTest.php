@@ -3,8 +3,9 @@
 namespace Isaac\BulmaForm;
 
 use Mockery;
-use AdamWathan\Form\FormBuilder;
+use stdClass;
 use PHPUnit_Framework_TestCase;
+use AdamWathan\Form\FormBuilder;
 
 class BasicFormBuilderTest extends PHPUnit_Framework_TestCase
 {
@@ -373,5 +374,147 @@ class BasicFormBuilderTest extends PHPUnit_Framework_TestCase
         $expected = '<label class="label" for="bio">Bio</label><p class="control is-danger"><textarea name="bio" rows="10" cols="50" class="textarea" id="bio"></textarea><span class="help">Sample error</span></p>';
         $result = $this->form->textarea('Bio', 'bio')->render();
         $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_open()
+    {
+        $expected = '<form method="POST" action="">';
+        $result = $this->form->open()->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_open_get()
+    {
+        $expected = '<form method="GET" action="">';
+        $result = $this->form->open()->get()->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_open_custom_action()
+    {
+        $expected = '<form method="POST" action="/login">';
+        $result = $this->form->open()->action('/login')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_close()
+    {
+        $expected = '</form>';
+        $result = $this->form->close();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function csrf_token()
+    {
+        $this->form->setToken('1234');
+        $expected = '<input type="hidden" name="_token" value="1234">';
+        $result = $this->form->token();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_open_put()
+    {
+        $expected = '<form method="POST" action=""><input type="hidden" name="_method" value="PUT">';
+        $result = $this->form->open()->put()->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function form_open_delete()
+    {
+        $expected = '<form method="POST" action=""><input type="hidden" name="_method" value="DELETE">';
+        $result = $this->form->open()->delete()->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_date_group()
+    {
+        $expected = '<label class="label" for="birthday">Birthday</label><p class="control"><input type="date" name="birthday" class="input" id="birthday"></p>';
+        $result = $this->form->date('Birthday', 'birthday')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_date_time_local_group()
+    {
+        $expected = '<label class="label" for="dob">Date & time of birth</label><p class="control"><input type="datetime-local" name="dob" class="input" id="dob"></p>';
+        $result = $this->form->dateTimeLocal('Date & time of birth', 'dob')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_email_group()
+    {
+        $expected = '<label class="label" for="email">Email</label><p class="control"><input type="email" name="email" class="input" id="email"></p>';
+        $result = $this->form->email('Email', 'email')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_file_group()
+    {
+        $expected = '<label class="label" for="file">File</label><p class="control"><input type="file" name="file" class="input" id="file"></p>';
+        $result = $this->form->file('File', 'file')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_file_group_with_error()
+    {
+        $errorStore = Mockery::mock('AdamWathan\Form\ErrorStore\ErrorStoreInterface');
+        $errorStore->shouldReceive('hasError')->andReturn(true);
+        $errorStore->shouldReceive('getError')->andReturn('Sample error');
+
+        $this->builder->setErrorStore($errorStore);
+
+        $expected = '<label class="label" for="file">File</label><p class="control is-danger"><input type="file" name="file" class="input" id="file"><span class="help">Sample error</span></p>';
+        $result = $this->form->file('File', 'file')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function can_add_class_to_underlying_control()
+    {
+        $expected = '<label class="label" for="color">Favorite Color</label><p class="control"><span class="select"><select name="color" id="color" class="my-class"><option value="1">Red</option><option value="2">Green</option><option value="3">Blue</option></select></span></p>';
+        $options = ['1' => 'Red', '2' => 'Green', '3' => 'Blue'];
+        $result = $this->form->select('Favorite Color', 'color', $options)->addClass('my-class')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function render_text_group_with_label_class()
+    {
+        $expected = '<label class="label required" for="email">Email</label><p class="control"><input type="text" name="email" class="input" id="email"></p>';
+        $result = $this->form->text('Email', 'email')->labelClass('required')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    /** @test */
+    function bind_object()
+    {
+        $object = $this->getStubObject();
+        $this->form->bind($object);
+        $expected = '<label class="label" for="first_name">First Name</label><p class="control"><input type="text" name="first_name" value="John" class="input" id="first_name"></p>';
+        $result = $this->form->text('First Name', 'first_name')->render();
+        $this->assertEquals($expected, $result);
+    }
+
+    private function getStubObject()
+    {
+        $obj = new stdClass;
+        $obj->email = 'johndoe@example.com';
+        $obj->first_name = 'John';
+        $obj->last_name = 'Doe';
+        $obj->date_of_birth = new \DateTime('1985-05-06');
+        $obj->gender = 'male';
+        $obj->terms = 'agree';
+        return $obj;
     }
 }

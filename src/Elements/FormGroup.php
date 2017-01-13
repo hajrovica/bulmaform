@@ -15,19 +15,19 @@ class FormGroup extends Element
     {
         $this->label = $label;
         $this->control = $control;
-        $this->addClass('form-group');
+        $this->addClass('control');
     }
 
     public function render()
     {
-        $html = '<div';
+        $html = $this->label;
+        $html .= '<p';
         $html .= $this->renderAttributes();
         $html .= '>';
-        $html .= $this->label;
         $html .= $this->control;
         $html .= $this->renderHelpBlock();
 
-        $html .= '</div>';
+        $html .= '</p>';
 
         return $html;
     }
