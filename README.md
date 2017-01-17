@@ -20,8 +20,7 @@ $ composer require nisaac2fly/bulmaform
 ## Usage
 
 ``` php
-$skeleton = new Isaac\BulmaForm();
-echo $skeleton->echoPhrase('Hello, League!');
+// TODO...
 ```
 
 ## Change log
